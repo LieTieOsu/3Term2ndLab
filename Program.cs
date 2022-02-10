@@ -51,3 +51,51 @@ List<Point> FindingPoints(string[,] localMap2, Point current)
 	}
 	return available;
 }
+
+List<Point> path = GetShortestPath(map, starting, finish);
+new MapPrinter().Print(map, path);
+List<Point> GetShortestPath(string[,] localMap, Point starting, Point finish)
+{
+	var nearPath = new List<Point> {starting};
+	var lastPoint = finish;
+	var distance = new Dictionary<Point, int>();
+	var origins = new Dictionary<Point, Point>();
+	var frontier = new Queue<Point>();
+	frontier.Enqueue(starting);
+	distance.Add(starting, 0);
+	while (frontier.Count != 0)
+	{
+		var current = frontier.Dequeue();
+		var available = FindingPoints(localMap, current);
+		foreach (var point in available)
+		{
+			if (!origins.ContainsKey(point))
+			{
+				frontier.Enqueue(point);
+				origins.Add(point, current);
+				if (!distance.ContainsKey(point))
+				{
+					distance.Add(point, distance[current] + 1);
+				}
+			}
+			else if (origins.ContainsKey(point) && distance[current] + 1 < distance[point])
+			{
+				origins[point] = current;
+			}
+		}
+		if (current.Equals(finish))
+		{
+			lastPoint = finish;
+			break;
+		}
+	}
+
+	var length = distance[lastPoint];
+	for (var i = 0; i != length; i++)
+	{
+		nearPath.Add(origins[lastPoint]);
+		lastPoint = origins[lastPoint];
+	}
+	nearPath.Add(finish);
+	return nearPath;
+}
