@@ -8,6 +8,16 @@ namespace Kse.Algorithms.Samples
         public void Print(string[,] maze)
         {
             PrintTopLine();
+            for (var pathedI = 0; pathedI <= way.Count - 1; pathedI++)
+            {
+                var newX = way[pathedI].Column;
+                var newY = way[pathedI].Row;
+                maze[newX, newY] = "$";
+            }
+
+            maze[way[0].Column, way[0].Row] = "A";
+            maze[way[way.Count - 1].Column, way[way.Count - 1].Row] = "B";
+
             for (var row = 0; row < maze.GetLength(1); row++)
             {
                 Console.Write($"{row}\t");
