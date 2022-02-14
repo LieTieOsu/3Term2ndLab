@@ -5,7 +5,7 @@ namespace Kse.Algorithms.Samples
 
     public class MapPrinter
     {
-        public void Print(string[,] maze)
+        public void Print(string[,] maze, List<Point> way)
         {
             PrintTopLine();
             for (var pathedI = 0; pathedI <= way.Count - 1; pathedI++)
